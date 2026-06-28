@@ -1,10 +1,13 @@
 import Router from 'koa-router';
 import User from '../models/User.js';
 import {
+    authMiddleware
+} from '../middleware/auth.js';
+import {
     generateToken
 } from '../utils/jwt.js';
 
-const router = new Router({prefix: 'api/auth'});
+const router = new Router({prefix: '/api/auth'});
 
 
 router.post('/register', async ctx => {
@@ -20,7 +23,7 @@ router.post('/register', async ctx => {
         return;
     }
 
-    const existingUser = await username.findOne({
+    const existingUser = await User.findOne({
         $or: [
             {email},
             {username},
@@ -68,6 +71,7 @@ router.post('/login', async ctx => {
         email,
         password,
     } = ctx.request.body;
+    console.log(ctx.request.body, 'ctx.request.body');
     if (!email || !password) {
         ctx.status = 400;
         ctx.body = {
@@ -75,7 +79,7 @@ router.post('/login', async ctx => {
         };
         return;
     }
-    const user = await user.findOne({email});
+    const user = await User.findOne({email});
     if (!user) {
         ctx.status = 401;
         ctx.body = {
@@ -108,8 +112,9 @@ router.post('/login', async ctx => {
     };
 });
 
-router.get('/me', async(ctx) => {
+router.get('/me', authMiddleware, async(ctx) => {
     const user = ctx.state.user;
+    console.log(user, 'user');
     if (!user) {
         ctx.status = 401;
         ctx.body = {

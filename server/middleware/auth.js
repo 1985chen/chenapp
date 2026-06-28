@@ -5,6 +5,10 @@ import User from '../models/User.js';
 
 export const authMiddleware = async(ctx, next) => {
     const authHeader = ctx.request.headers.authorization;
+    console.log({
+        User,
+        authHeader,
+    });
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         ctx.status = 401;
         ctx.body = {
@@ -14,6 +18,7 @@ export const authMiddleware = async(ctx, next) => {
     }
 
     const token = authHeader.slice(7);
+    console.log({token});
     if (!token) {
         ctx.status = 401;
         ctx.body = {
