@@ -4,6 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "node server/app.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
