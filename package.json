@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server/app.js",
+    "start": "cd server && npm install && node app.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
